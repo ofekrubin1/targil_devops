@@ -1,13 +1,27 @@
 node('zip-job-docker') {
 
+    stage ('Preparation') {
+      docker.image('zip-job-docker').inside {
+      sh '''
+      ls -la
+      '''
+      }
+    }
+
+
+
     stage('Checkout') {
         checkout scm
+        echo "repo cloned ${env.GIT_URL}"
     }
 
     stage('Build') {
         sh '''
         echo "Running zip job..."
         python3 zip_job.py
+        '''
+        sh '''
+        ls -la
         '''
     }
 
