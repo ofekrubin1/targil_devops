@@ -17,6 +17,7 @@ node('zip-job-docker') {
         }
     }
     stage('Publish') {
+        sh 'ls -la'
         def server = Artifactory.server('artifactory-tlv')
         def uploadSpec = """{
           "files": [
@@ -34,7 +35,7 @@ node('zip-job-docker') {
   } finally {
     stage('Cleanup') {
         deleteDir()
-        sh 'rm -rf ${WORKSPACE}@tmp'
+        sh 'rm -rf "${WORKSPACE}@tmp"'
     }
   }
 }
