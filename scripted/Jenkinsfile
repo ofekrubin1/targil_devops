@@ -31,7 +31,7 @@ node('zip-job-docker') {
         ]
       }"""
 
-      server.upload spec: uploadSpec
+      server.upload(uploadSpec)
       }
     }
   } catch (err) {
