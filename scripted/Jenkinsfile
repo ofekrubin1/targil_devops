@@ -1,39 +1,41 @@
 node('zip-job-docker') {
+  try {
 
-    def zipJobImage = 'zip_job_image:latest'
-    // Now Jenkins finds 'docker' and can run your image
+      def zipJobImage = 'zip_job_image:latest'
+      // Now Jenkins finds 'docker' and can run your image
 
-    def gitVars
-    stage('Checkout') {
-        gitVars = checkout scm
-        echo "repo cloned ${gitVars.GIT_URL}"
-        sh 'ls -la'
-    }
+      def gitVars
+      stage('Checkout') {
+          gitVars = checkout scm
+          echo "repo cloned ${gitVars.GIT_URL}"
+          sh 'ls -la'
+      }
 
     docker.image(zipJobImage).inside {
       echo "Successfully running inside the container!"
-
-
+      
       stage('Build') {
         sh 'python3 zip_job.py'
         sh 'ls -la'
+      }
+      stage('Publish') {
+
+      def server = Artifactory.server('artifactory-server')
+
+      def uploadSpec = """{
+        "files": [
+          {
+            "pattern": "a_1.2.0.zip",
+            "target": "generic-local/"
+          }
+        ]
+      }"""
+
+      server.upload spec: uploadSpec
+      }
     }
-    stage('Publish') {
-
-    def server = Artifactory.server('artifactory-server')
-
-    def uploadSpec = """{
-      "files": [
-        {
-          "pattern": "*.zip",
-          "target": "generic-local/"
-        }
-      ]
-    }"""
-
-    server.upload spec: uploadSpec
-    }
-
-
-  } 
+  } catch (err) {
+      echo "Build failed: ${err}"
+      currentBuild.result = 'FAILURE'
+  }
 }
