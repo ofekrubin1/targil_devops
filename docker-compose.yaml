@@ -1,26 +1,24 @@
-version: "3.3"
+version: "3.8"
+
 services:
-  artifactory-service:
-    image: docker.bintray.io/jfrog/artifactory-oss:7.49.6
+  artifactory:
+    image: releases-docker.jfrog.io/jfrog/artifactory-oss:7.49.6
     container_name: artifactory-tlv
     restart: always
     ports:
-      - "8081:8081"
-      - "8082:8082"
+      - "8081:8081" # Artifactory UI/API
+      - "8082:8082" # JFrog Router
     environment:
-      - ARTIFACTORY_URL=http://artifactory-tlv
-      - ARTIFACTORY_USER=super-user
-      - ARTIFACTORY_PASSWORD=Qw12856!
-      - ARTIFACTORY_USERS_CREATION_MODE=auto
-      - ARTIFACTORY_DEFAULT_ADMIN=super-user
-      - ARTIFACTORY_DEFAULT_ADMIN_PASSWORD=Qw12856!
-      - ARTIFACTORY_REPOSITORY=binary-storage/${VERSION}
+      # This ensures Artifactory knows its own name for internal redirects
+      - JF_ROUTER_ENTRYPOINTS_EXTERNALPORT=8082
     volumes:
-      - /tmp/artifactory:/tmp/jfrog/artifactory
+      # Fix: Map to the correct internal path /var/opt/jfrog/artifactory
+      - /opt/artifactory:/var/opt/jfrog/artifactory
     networks:
-      - my-network
+      my-network:
+        aliases:
+          - artifactory-tlv
 
-networks:    # Define the networks section
+networks:
   my-network:
     external: true
-
