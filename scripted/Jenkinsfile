@@ -21,12 +21,12 @@ node('zip-job-docker') {
         def uploadSpec = """{
           "files": [
             {
-              "pattern": "a_1.2.0.zip",
+              "pattern": "*.zip",
               "target": "generic-local/"
             }
           ]
         }"""
-        server.upload spec: uploadSpec
+        server.upload(uploadSpec)
     }
   } catch (err) {
       echo "Build failed: ${err}"
@@ -34,6 +34,7 @@ node('zip-job-docker') {
   } finally {
     stage('Cleanup') {
         deleteDir()
+        sh 'rm -rf ${WORKSPACE}@tmp'
     }
   }
 }
