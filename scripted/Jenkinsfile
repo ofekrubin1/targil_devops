@@ -2,44 +2,38 @@ node('zip-job-docker') {
 
     def zipJobImage = 'zip_job_image:latest'
     // Now Jenkins finds 'docker' and can run your image
+
+    def gitVars
+    stage('Checkout') {
+        gitVars = checkout scm
+        echo "repo cloned ${gitVars.GIT_URL}"
+        sh 'ls -la'
+    }
+
     docker.image(zipJobImage).inside {
       echo "Successfully running inside the container!"
 
-      stage('Checkout') {
-          checkout scm
-          echo "repo cloned ${env.GIT_URL}"
-          sh 'ls -la'
-      }
+
       stage('Build') {
-        sh '''
-        echo "Running zip job..."
-        python3 zip_job.py
-        '''
-        sh '''
-        ls -la
-        '''
+        sh 'python3 zip_job.py'
+        sh 'ls -la'
     }
     stage('Publish') {
 
-        def server = Artifactory.server('artifactory-server')
+    def server = Artifactory.server('artifactory-server')
 
-        def uploadSpec = """{
-          "files": [
-            {
-              "pattern": "*.zip",
-              "target": "generic-local/"
-            }
-          ]
-        }"""
+    def uploadSpec = """{
+      "files": [
+        {
+          "pattern": "*.zip",
+          "target": "generic-local/"
+        }
+      ]
+    }"""
 
-        server.upload(uploadSpec)
+    server.upload spec: uploadSpec
     }
 
-    
-  }
 
-
-    
-
-    
+  } 
 }

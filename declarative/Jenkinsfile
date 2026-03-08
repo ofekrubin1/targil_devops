@@ -1,7 +1,9 @@
 pipeline {
+    //all the rest of the stages will run on this agent
     agent {
         label 'zip-job-docker'
     }
+
     tools {
         jfrog 'jfrog-cli-latest'
     }
