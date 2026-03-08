@@ -1,16 +1,10 @@
 node('zip-job-docker') {
-    // 1. Locate the tool you defined in the UI
-    def dockerTool = tool name: 'docker-latest', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
-    
-    // 2. Add that tool's bin folder to the PATH
-    withEnv(["PATH+DOCKER=${dockerTool}/bin"]) {
-        
-        stage('Preparation') {
-            // Now Jenkins finds 'docker' and can run your image
-            docker.image('zip_job_docker:latest').inside {
-                sh 'ls -la'
-                echo "Successfully running inside the container!"
-            }
+
+    stage('Preparation') {
+        // Now Jenkins finds 'docker' and can run your image
+        docker.image('zip_job_docker:latest').inside {
+            sh 'ls -la'
+            echo "Successfully running inside the container!"
         }
     }
 
