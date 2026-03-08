@@ -1,6 +1,6 @@
 node('zip-job-docker') {
     // 1. Locate the tool you defined in the UI
-    def dockerTool = tool name: 'docker-latest'
+    def dockerTool = tool name: 'docker-latest', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
     
     // 2. Add that tool's bin folder to the PATH
     withEnv(["PATH+DOCKER=${dockerTool}/bin"]) {
