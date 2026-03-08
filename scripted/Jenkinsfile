@@ -20,7 +20,7 @@ node('zip-job-docker') {
       }
       stage('Publish') {
 
-      def server = Artifactory.server('artifactory-server')
+      def server = Artifactory.server('artifactory-tlv')
 
       def uploadSpec = """{
         "files": [
