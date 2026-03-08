@@ -34,8 +34,10 @@ timestamps{
         echo "Build failed: ${err}"
         currentBuild.result = 'FAILURE'
     } finally {
-    stage('Cleanup') {
-      deleteDir()
+      stage('Cleanup') {
+        deleteDir()
+        sh 'rm -rf "${WORKSPACE}@tmp" || true'
+      }
     }
   }
 }
