@@ -1,19 +1,16 @@
 node('zip-job-docker') {
 
-    stage('Preparation') {
-        // Now Jenkins finds 'docker' and can run your image
-        docker.image('zip_job_image:latest').inside {
-            sh 'ls -la'
-            echo "Successfully running inside the container!"
-        }
-    }
+    def zipJobImage = 'zip_job_image:latest'
+    // Now Jenkins finds 'docker' and can run your image
+    docker.image(zipJobImage).inside {
+      echo "Successfully running inside the container!"
 
-    stage('Checkout') {
-        checkout scm
-        echo "repo cloned ${env.GIT_URL}"
-    }
-
-    stage('Build') {
+      stage('Checkout') {
+          checkout scm
+          echo "repo cloned ${env.GIT_URL}"
+          sh 'ls -la'
+      }
+      stage('Build') {
         sh '''
         echo "Running zip job..."
         python3 zip_job.py
@@ -22,7 +19,6 @@ node('zip-job-docker') {
         ls -la
         '''
     }
-
     stage('Publish') {
 
         def server = Artifactory.server('artifactory-server')
@@ -38,4 +34,12 @@ node('zip-job-docker') {
 
         server.upload(uploadSpec)
     }
+
+    
+  }
+
+
+    
+
+    
 }
