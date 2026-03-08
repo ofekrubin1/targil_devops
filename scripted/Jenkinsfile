@@ -2,7 +2,7 @@ node('zip-job-docker') {
 
     stage('Preparation') {
         // Now Jenkins finds 'docker' and can run your image
-        docker.image('zip_job_docker:latest').inside {
+        docker.image('zip_job_image:latest').inside {
             sh 'ls -la'
             echo "Successfully running inside the container!"
         }
