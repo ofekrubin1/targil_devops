@@ -57,6 +57,7 @@ timestamps{
         subject: "Build ${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
         body: "Check console output at: ${env.BUILD_URL}",
         to: mailRecipients
+        recipientProviders: [requestor(), developers(), culprits()]
         )
       }
     }
