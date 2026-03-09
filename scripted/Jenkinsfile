@@ -9,6 +9,8 @@ timestamps{
     def pythonCommand = 'python3'
     def version = '1.2.0'
 
+    def timestamp = new Date().format("yyyyMMdd_HHmmss", TimeZone.getTimeZone('GMT+2'))
+
     //emails list
     def teamList = [
     'ofekrubin1996@gmail.com',
@@ -41,7 +43,7 @@ timestamps{
               "files": [
                 {
                   "pattern": "${fileName}",
-                  "target": "${artifactoryRepo}/"
+                  "target": "${artifactoryRepo}/${timestamp}/"
                 }
               ]
             }"""
