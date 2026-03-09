@@ -61,16 +61,16 @@ timestamps{
     } 
     
     finally {
-      stage('Cleanup') {
-        deleteDir()
-        echo "workspace cleaned!"
-      }
-      stage ('Send Notification') {
+      stage ('Report') {
         emailext(
         subject: "Build ${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
         body: "Check console output at: ${env.BUILD_URL}",
         to: mailRecipients
         )
+      }
+        stage('Cleanup') {
+        deleteDir()
+        echo "workspace cleaned!"
       }
     }
   }
