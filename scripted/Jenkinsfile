@@ -8,6 +8,7 @@ timestamps{
     def artifactoryRepo = 'generic-local'
     def pythonCommand = 'python3'
     def version = '1.2.0'
+    def files = ['a', 'b', 'c', 'd']
 
     def timestamp = new Date().format("yyyyMMdd_HHmmss", TimeZone.getTimeZone('GMT+2'))
 
@@ -24,39 +25,33 @@ timestamps{
         echo "repo cloned ${gitVars.GIT_URL}"
         sh "ls -la"
       }
-      stage('Build') {
-          docker.image(zipJobImage).inside("--privileged") {
-            echo "Successfully running inside the container!"
-            sh "${pythonCommand} ${pythonScript}"
-            sh "ls -la"
-          }
-      }
-      stage('Publish') {
-        def server = Artifactory.server(artifactoryID)
-        def files = ['a', 'b', 'c', 'd']
-        
-
-        files.each { file ->
-          def fileName = "${file}_${version}.zip"
-          if (fileExists(fileName)) {
-            def uploadSpec = """{
-              "files": [
-                {
-                  "pattern": "${fileName}",
-                  "target": "${artifactoryRepo}/${timestamp}/"
-                }
-              ]
-            }"""
-            server.upload(uploadSpec)
-            echo "Artifact ${fileName} successfully uploaded to Artifactory!"
-          } else {
-            error "File not found: ${fileName}. Check the Build stage logs!"
-          }
-          
+      docker.image(zipJobImage).inside("--privileged") {
+        stage('Build') {
+        echo "Successfully running inside the container!"
+        sh "${pythonCommand} ${pythonScript}"
+        sh "ls -la"
         }
-        
-        
-        currentBuild.result = 'SUCCESS'
+        stage('Publish') {
+          def server = Artifactory.server(artifactoryID)
+          files.each { file ->
+            def fileName = "${file}_${version}.zip"
+            if (fileExists(fileName)) {
+              def uploadSpec = """{
+                "files": [
+                  {
+                    "pattern": "${fileName}",
+                    "target": "${artifactoryRepo}/${timestamp}/"
+                  }
+                ]
+              }"""
+              server.upload(uploadSpec)
+              echo "Artifact ${fileName} successfully uploaded to Artifactory!"
+            } else {
+              error "File not found: ${fileName}. Check the Build stage logs!"
+            }
+          }
+          currentBuild.result = 'SUCCESS'
+        }
       }
     } 
     
