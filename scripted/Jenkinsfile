@@ -50,7 +50,7 @@ timestamps{
       }
       stage ('Send Notification') {
         emailext(
-        subject: "Build ${buildStatus}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+        subject: "Build ${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
         body: "Check console output at: ${env.BUILD_URL}",
         to: "${mailRecipients}"
         )
