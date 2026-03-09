@@ -53,14 +53,12 @@ timestamps{
               subject: "Build Successful",
               body: "Your scripted pipeline build succeeded. Good job!",
               to: "ofekrubin1996@gmail.com",
-              recipientProviders: [requestor(), developers(), culprits()]
           )
         } else if (result == 'FAILURE') {
           emailext(
               subject: "Build Failed",
               body: "Your scripted pipeline build failed. Please check the logs.",
               to: "ofekrubin1996@gmail.com",
-              recipientProviders: [requestor(), developers(), culprits()]
           )
         }
       }
