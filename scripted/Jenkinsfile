@@ -1,5 +1,3 @@
-import org.jfrog.hudson.pipeline.common.types.ArtifactoryServer
-
 timestamps{
   node('zip-job-docker') {
     
