@@ -26,18 +26,24 @@ timestamps{
           }
       }
       stage('Publish') {
-        sh "ls -la"
         def server = Artifactory.server('artifactory-server')
-        def uploadSpec = """{
-          "files": [
-            {
-              "pattern": "*.zip",
-              "target": "${artifactoryRepo}/"
-            }
-          ]
-        }"""
+        def files = ['a', 'b', 'c', 'd']
+        def uploadSpec
+
+        files.each { file ->
+          uploadSpec = """{
+            "files": [
+              {
+                "pattern": "${file}_1.2.0.zip",
+                "target": "${artifactoryRepo}/"
+              }
+            ]
+          }"""
         server.upload(uploadSpec)
-        echo "Artifact uploaded successfully to Artifactory!"
+        echo "Artifact ${file}_1.2.0.zip successfully uploaded to Artifactory!"
+        }
+        
+        
         currentBuild.result = 'SUCCESS'
       }
     } 
