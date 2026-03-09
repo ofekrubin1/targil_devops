@@ -25,14 +25,14 @@ timestamps{
         sh "ls -la"
       }
       stage('Build') {
-          docker.image(zipJobImage).inside {
+          docker.image(zipJobImage).inside("--privileged") {
             echo "Successfully running inside the container!"
             sh "${pythonCommand} ${pythonScript}"
             sh "ls -la"
           }
       }
       stage('Publish') {
-        def server = Artifactory.server('artifactory-server')
+        def server = Artifactory.server(artifactoryID)
         def files = ['a', 'b', 'c', 'd']
         
 
