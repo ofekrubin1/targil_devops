@@ -6,9 +6,13 @@ timestamps{
     def artifactoryID = 'artifactory-server'
     def pythonScript = 'zip_job.py'
     def artifactoryRepo = 'generic-local'
+    def pythonCommand = 'python3'
+    def version = '1.2.0'
+
+    //emails list
     def teamList = [
     'ofekrubin1996@gmail.com',
-    'mayh98@gmail.com'
+    //'extra-mail@gmail.com' can be added here
     ]
     def mailRecipients = teamList.join(', ')
 
@@ -21,26 +25,32 @@ timestamps{
       stage('Build') {
           docker.image(zipJobImage).inside {
             echo "Successfully running inside the container!"
-            sh "python3 ${pythonScript}"
+            sh "${pythonCommand} ${pythonScript}"
             sh "ls -la"
           }
       }
       stage('Publish') {
         def server = Artifactory.server('artifactory-server')
         def files = ['a', 'b', 'c', 'd']
-        def uploadSpec
+        
 
         files.each { file ->
-          uploadSpec = """{
-            "files": [
-              {
-                "pattern": "${file}_1.2.0.zip",
-                "target": "${artifactoryRepo}/"
-              }
-            ]
-          }"""
-        server.upload(uploadSpec)
-        echo "Artifact ${file}_1.2.0.zip successfully uploaded to Artifactory!"
+          def fileName = "${file}_${version}.zip"
+          if (fileExists(fileName)) {
+            def uploadSpec = """{
+              "files": [
+                {
+                  "pattern": "${fileName}",
+                  "target": "${artifactoryRepo}/"
+                }
+              ]
+            }"""
+            server.upload(uploadSpec)
+            echo "Artifact ${fileName} successfully uploaded to Artifactory!"
+          } else {
+            error "File not found: ${fileName}. Check the Build stage logs!"
+          }
+          
         }
         
         
