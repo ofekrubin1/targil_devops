@@ -1,14 +1,14 @@
 timestamps{
-
   node('zip-job-docker') {
-    try {
-      def zipJobImage = 'zip_job_image:latest'
-      def gitVars
-      def artifactoryID = 'artifactory-tlv'
-      def pythonScript = 'zip_job.py'
-      def artifactoryRepo = 'generic-local'
-      def mailRecipients = 'ofekrubin1996@gmail.com'
+    
+    def zipJobImage = 'zip_job_image:latest'
+    def gitVars
+    def artifactoryID = 'artifactory-tlv'
+    def pythonScript = 'zip_job.py'
+    def artifactoryRepo = 'generic-local'
+    def mailRecipients = 'ofekrubin1996@gmail.com'
 
+    try {
       stage('Checkout') {
         gitVars = checkout scm
         echo "repo cloned ${gitVars.GIT_URL}"
