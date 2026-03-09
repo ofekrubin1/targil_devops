@@ -52,7 +52,7 @@ timestamps{
         emailext(
         subject: "Build ${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
         body: "Check console output at: ${env.BUILD_URL}",
-        to: "${mailRecipients}"
+        to: mailRecipients
         )
       }
         //def result = currentBuild.result ?: 'SUCCESS' //if result is null, set it to SUCCESS
