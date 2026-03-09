@@ -8,7 +8,7 @@ timestamps{
     def artifactoryRepo = 'generic-local'
     def teamList = [
     'ofekrubin1996@gmail.com',
-    'mmayh98@gmail.com'
+    'mayh98@gmail.com'
     ]
     def mailRecipients = teamList.join(', ')
 
