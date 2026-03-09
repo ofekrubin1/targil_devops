@@ -6,7 +6,7 @@ timestamps{
     def artifactoryID = 'artifactory-server'
     def pythonScript = 'zip_job.py'
     def artifactoryRepo = 'generic-local'
-    def mailRecipients = ['ofekrubin1996@gmail.com', 'mayh98@gmail.com']
+    def mailRecipients = 'ofekrubin1996@gmail.com'
 
     try {
       stage('Checkout') {
