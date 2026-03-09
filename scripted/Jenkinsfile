@@ -7,6 +7,7 @@ timestamps{
       def artifactoryID = 'artifactory-tlv'
       def pythonScript = 'zip_job.py'
       def artifactoryRepo = 'generic-local'
+      def mailRecipients = 'ofekrubin1996@gmail.com'
 
       stage('Checkout') {
         gitVars = checkout scm
@@ -45,25 +46,33 @@ timestamps{
     finally {
       stage('Cleanup') {
         deleteDir()
+        echo "workspace cleaned!"
       }
       stage ('Send Notification') {
-        def result = currentBuild.result ?: 'SUCCESS' //if result is null, set it to SUCCESS
-        if (result == 'SUCCESS') {
-          emailext(
-              subject: "Build Successful",
-              body: "Your scripted pipeline build succeeded. Good job!",
-              to: "ofekrubin1996@gmail.com",
-              recipientProviders: [requestor(), developers(), culprits()]
-          )
-        } else if (result == 'FAILURE') {
-          emailext(
-              subject: "Build Failed",
-              body: "Your scripted pipeline build failed. Please check the logs.",
-              to: "ofekrubin1996@gmail.com",
-              recipientProviders: [requestor(), developers(), culprits()]
-          )
-        }
+        emailext(
+        subject: "Build ${buildStatus}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+        body: "Check console output at: ${env.BUILD_URL}",
+        to: "${mailRecipients}"
+        )
       }
+        //def result = currentBuild.result ?: 'SUCCESS' //if result is null, set it to SUCCESS
+        //
+        //if (result == 'SUCCESS') {
+        //  emailext(
+        //      subject: "Build Successful",
+        //      body: "Your scripted pipeline build succeeded. Good job!",
+        //      to: "ofekrubin1996@gmail.com",
+        //      recipientProviders: [requestor(), developers(), culprits()]
+        //  )
+        //} else if (result == 'FAILURE') {
+        //  emailext(
+        //      subject: "Build Failed",
+        //      body: "Your scripted pipeline build failed. Please check the logs.",
+        //      to: "ofekrubin1996@gmail.com",
+        //      recipientProviders: [requestor(), developers(), culprits()]
+        //  )
+        //}
+      //}
     }
   }
 }
