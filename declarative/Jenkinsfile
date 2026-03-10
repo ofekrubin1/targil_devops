@@ -29,11 +29,6 @@ pipeline {
             }
             steps {
                 script {
-
-                    echo "--- Verifying Container Environment ---"
-                    sh "echo 'Operating System:' \$(uname -s) \$(uname -m)"
-                    sh "[ -e /tmp/zip_job.py ] && echo '/tmp/zip_job.py exists' || echo 'ERROR: File missing!'"
-
                     // --- SECTION: BUILD ---
                     echo "-------------------------------------------"
                     echo "STAGE: BUILD"
