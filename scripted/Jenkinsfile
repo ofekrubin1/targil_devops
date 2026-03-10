@@ -4,7 +4,7 @@ timestamps{
     def zipJobImage = 'zip_job_image:latest'
     def gitVars
     def artifactoryID = 'artifactory-server'
-    def pythonScript = 'zip_job.py'
+    def pythonScriptLocation = '/tmp/zip_job.py'
     def artifactoryRepo = 'generic-local'
     def pythonCommand = 'python3'
     def version = '1.2.0'
@@ -13,22 +13,19 @@ timestamps{
     def timestamp = new Date().format("yyyyMMdd_HHmmss", TimeZone.getTimeZone('GMT+2'))
 
     //emails list
-    def teamList = [
-    'ofekrubin1996@gmail.com',
-    //'extra-mail@gmail.com' can be added here
-    ]
+    def teamList = ['ofekrubin1996@gmail.com', 'poodelnoodel1@gmail.com']
     def mailRecipients = teamList.join(', ')
 
     try {
-      stage('Checkout') {
-        gitVars = checkout scm
-        echo "repo cloned ${gitVars.GIT_URL}"
-        sh "ls -la"
-      }
+      //stage('Checkout') {
+      //  gitVars = checkout scm
+      //  echo "repo cloned ${gitVars.GIT_URL}"
+      //  sh "ls -la"
+      //}
       docker.image(zipJobImage).inside("--privileged") {
         stage('Build') {
         echo "Successfully running inside the container!"
-        sh "${pythonCommand} ${pythonScript}"
+        sh "${pythonCommand} ${pythonScriptLocation}"
         sh "ls -la"
         }
         stage('Publish') {
