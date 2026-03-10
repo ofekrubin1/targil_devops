@@ -18,11 +18,6 @@ timestamps{
     def mailRecipients = teamList.join(', ')
 
     try {
-      //stage('Checkout') {
-      //  gitVars = checkout scm
-      //  echo "repo cloned ${gitVars.GIT_URL}"
-      //  sh "ls -la"
-      //}
       docker.image(zipJobImage).inside("--privileged") {
         stage('Build') {
         echo "Successfully running inside the container!"
