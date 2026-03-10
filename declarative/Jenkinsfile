@@ -9,7 +9,7 @@ pipeline {
 
     environment {
         TYPE = 'declarative'
-        ZIP_JOB_IMAGE = 'zip_job_image:latest'
+        ZIP_JOB_IMAGE = 'zip_job_image:test'
         ZIP_JOB_DOCKER_LABEL = 'zip-job-docker'
         ARTIFACTORY_ID = 'artifactory-server'
         PYTHON_SCRIPT_LOCATION = '/tmp/zip_job.py'
