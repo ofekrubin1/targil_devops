@@ -1,12 +1,15 @@
+
 def files = ['a', 'b', 'c', 'd']
 def teamList = ['ofekrubin1996@gmail.com', 'poodelnoodel1@gmail.com']
 def mailRecipients = teamList.join(', ')
 
 pipeline {
+
     agent { label 'zip-job-docker' }
 
     environment {
-        ZIP_JOB_IMAGE = 'zip_job_image:test'
+        TYPE = 'declarative'
+        ZIP_JOB_IMAGE = 'zip_job_image:latest'
         ZIP_JOB_DOCKER_LABEL = 'zip-job-docker'
         ARTIFACTORY_ID = 'artifactory-server'
         PYTHON_SCRIPT_LOCATION = '/tmp/zip_job.py'
@@ -14,7 +17,6 @@ pipeline {
         PYTHON_CMD = 'python3'
         VERSION = '1.2.0'
         TIMESTAMP = "${new Date().format('yyyyMMdd_HHmmss', TimeZone.getTimeZone('GMT+2'))}"
-        TYPE = 'declarative'
     }
 
     stages {
