@@ -18,7 +18,7 @@ pipeline {
     }
 
     stages {
-        stage('Docker Work') {
+        stage('Build and Publish') {
             agent {
                 docker { 
                     image "${env.ZIP_JOB_IMAGE}"
@@ -27,37 +27,38 @@ pipeline {
                     args '--privileged'
                 }
             }
-            stages {
-                stage('Build') {
-                    steps {
-                        echo "Running build..."
-                        sh "${env.PYTHON_CMD} ${env.PYTHON_SCRIPT_LOCATION}"
-                    }
-                }
+            steps {
+                script {
+                    // --- SECTION: BUILD ---
+                    echo "-------------------------------------------"
+                    echo "STAGE: BUILD"
+                    echo "-------------------------------------------"
+                    sh "${env.PYTHON_CMD} ${env.PYTHON_SCRIPT_LOCATION}"
 
-                stage('Publish') {
-                    steps {
-                        script {
-                            def server = Artifactory.server(env.ARTIFACTORY_ID)
-                            
-                            files.each { file ->
-                                def fileName = "${file}_${env.VERSION}.zip"
-                                
-                                if (fileExists(fileName)) {
-                                    def uploadSpec = """{
-                                        "files": [
-                                            {
-                                            "pattern": "${fileName}",
-                                            "target": "${env.ARTIFACTORY_REPO}/${env.TYPE}/${env.TIMESTAMP}/"
-                                            }
-                                        ]
-                                    }"""
-                                    server.upload(uploadSpec)
-                                    echo "Uploaded: ${fileName}"
-                                } else {
-                                    error "Missing artifact: ${fileName}"
-                                }
-                            }
+                    // --- SECTION: PUBLISH ---
+                    echo "-------------------------------------------"
+                    echo "STAGE: PUBLISH"
+                    echo "-------------------------------------------"
+                    def server = Artifactory.server(env.ARTIFACTORY_ID)
+                    
+                    files.each { file ->
+                        def fileName = "${file}_${env.VERSION}.zip"
+                        
+                        if (fileExists(fileName)) {
+                            def uploadSpec = """{
+                                "files": [
+                                    {
+                                        "pattern": "${fileName}",
+                                        "target": "${env.ARTIFACTORY_REPO}/${env.TYPE}/${env.TIMESTAMP}/",
+                                        "flat": "true"
+                                    }
+                                ]
+                            }"""
+                            server.upload(uploadSpec)
+                            echo "Uploaded: ${fileName}"
+                        } else {
+                            // This triggers the 'failure' block below
+                            error "Missing artifact: ${fileName}"
                         }
                     }
                 }
