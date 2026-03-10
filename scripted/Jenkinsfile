@@ -2,7 +2,6 @@ timestamps{
   node('zip-job-docker') {
     
     def zipJobImage = 'zip_job_image:latest'
-    def gitVars
     def artifactoryID = 'artifactory-server'
     def pythonScriptLocation = '/tmp/zip_job.py'
     def artifactoryRepo = 'generic-local'
