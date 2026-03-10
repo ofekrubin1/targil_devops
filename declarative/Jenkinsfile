@@ -6,7 +6,7 @@ pipeline {
     agent { label 'zip-job-docker' }
 
     environment {
-        ZIP_JOB_IMAGE = 'zip_job_image:latest'
+        ZIP_JOB_IMAGE = 'zip_job_image:test'
         ZIP_JOB_DOCKER_LABEL = 'zip-job-docker'
         ARTIFACTORY_ID = 'artifactory-server'
         PYTHON_SCRIPT_LOCATION = '/tmp/zip_job.py'
@@ -33,7 +33,7 @@ pipeline {
                     echo "--- Verifying Container Environment ---"
                     sh "echo 'Operating System:' \$(uname -s) \$(uname -m)"
                     sh "[ -e /tmp/zip_job.py ] && echo '/tmp/zip_job.py exists' || echo 'ERROR: File missing!'"
-                    
+
                     // --- SECTION: BUILD ---
                     echo "-------------------------------------------"
                     echo "STAGE: BUILD"
