@@ -47,9 +47,8 @@ pipeline {
                                     def uploadSpec = """{
                                         "files": [
                                             {
-                                                "pattern": "${fileName}",
-                                                "target": "${env.ARTIFACTORY_REPO}/${env.TYPE}/${env.TIMESTAMP}/",
-                                                "flat": "true"
+                                            "pattern": "${fileName}",
+                                            "target": "${env.ARTIFACTORY_REPO}/${env.TYPE}/${env.TIMESTAMP}/",
                                             }
                                         ]
                                     }"""
@@ -67,6 +66,9 @@ pipeline {
     }
     
     post {
+        failure {
+            echo "Build failed: The pipeline has collapsed."
+        }
         always {
             emailext(
                 subject: "Build ${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
