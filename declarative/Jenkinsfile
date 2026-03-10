@@ -48,7 +48,7 @@ pipeline {
                                         "files": [
                                             {
                                             "pattern": "${fileName}",
-                                            "target": "${env.ARTIFACTORY_REPO}/${env.TYPE}/${env.TIMESTAMP}/",
+                                            "target": "${env.ARTIFACTORY_REPO}/${env.TYPE}/${env.TIMESTAMP}/"
                                             }
                                         ]
                                     }"""
