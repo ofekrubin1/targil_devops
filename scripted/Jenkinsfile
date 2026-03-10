@@ -9,6 +9,7 @@ timestamps{
     def pythonCommand = 'python3'
     def version = '1.2.0'
     def files = ['a', 'b', 'c', 'd']
+    def type = 'scripted'
 
     def timestamp = new Date().format("yyyyMMdd_HHmmss", TimeZone.getTimeZone('GMT+2'))
 
@@ -37,14 +38,14 @@ timestamps{
                 "files": [
                   {
                     "pattern": "${fileName}",
-                    "target": "${artifactoryRepo}/${timestamp}/"
+                    "target": "${artifactoryRepo}/${type}/${timestamp}/"
                   }
                 ]
               }"""
               server.upload(uploadSpec)
-              echo "Artifact ${fileName} successfully uploaded to Artifactory!"
+              echo "Uploaded: ${fileName}"
             } else {
-              error "File not found: ${fileName}. Check the Build stage logs!"
+              error "File not found: ${fileName}"
             }
           }
           currentBuild.result = 'SUCCESS'
