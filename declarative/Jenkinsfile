@@ -9,23 +9,15 @@ pipeline {
         ZIP_JOB_IMAGE = 'zip_job_image:latest'
         ZIP_JOB_DOCKER_LABEL = 'zip-job-docker'
         ARTIFACTORY_ID = 'artifactory-server'
-        PYTHON_SCRIPT = 'zip_job.py'
+        PYTHON_SCRIPT_LOCATION = '/tmp/zip_job.py'
         ARTIFACTORY_REPO = 'generic-local'
         PYTHON_CMD = 'python3'
         VERSION = '1.2.0'
         TIMESTAMP = "${new Date().format('yyyyMMdd_HHmmss', TimeZone.getTimeZone('GMT+2'))}"
+        TYPE = 'declarative'
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                script {
-                    def gitVars = checkout scm
-                    echo "Checking out from: ${gitVars.GIT_URL}"
-                }
-            }
-        }
-
         stage('Docker Work') {
             agent {
                 docker { 
@@ -39,7 +31,7 @@ pipeline {
                 stage('Build') {
                     steps {
                         echo "Running build..."
-                        sh "${env.PYTHON_CMD} ${env.PYTHON_SCRIPT}"
+                        sh "${env.PYTHON_CMD} ${env.PYTHON_SCRIPT_LOCATION}"
                     }
                 }
 
@@ -56,7 +48,7 @@ pipeline {
                                         "files": [
                                             {
                                                 "pattern": "${fileName}",
-                                                "target": "${env.ARTIFACTORY_REPO}/${env.TIMESTAMP}/",
+                                                "target": "${env.ARTIFACTORY_REPO}/${env.TYPE}/${env.TIMESTAMP}/",
                                                 "flat": "true"
                                             }
                                         ]
