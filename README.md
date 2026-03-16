@@ -1,6 +1,6 @@
 # 🚀 Targil_DevOps Details
 
-## This repository implements a DevOps CI/CD pipeline using:
+## ♾️ This repository implements a CI/CD pipeline using:
 
 - **Git**
 - **Docker**
