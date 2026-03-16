@@ -37,8 +37,9 @@ The project is divided into three core technical layers:
 - Create a Custom Dockerfile
 - Create a Jenkins system that will run 2 Jenkinsfiles
 - Create an Artifactory system that will store files
-- 
+  
 **Application Logic:** Python scripts
+
 **Pipeline Orchestration:** Two distinct Jenkinsfiles (Declarative and Scripted) that manage the build, publish, and reporting lifecycle.
 
 ## 📌 Project Goals
