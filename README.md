@@ -35,17 +35,18 @@ The project is divided into three core technical layers:
 
 **Environment:** 
 - Custom Dockerfile.
-- Jenkins Application (with docker-compose) that will trigger 2 Jenkinsfiles from Github.
+- Jenkins Application (with docker-compose) that will trigger Jenkinsfile from Github.
 - Artifactory Application (with docker-compose) that will store files.
   
-**Application Logic:** Python scripts
+**Application Logic:** 
+- Python scripts (inside the running container)
 
 **Pipeline Orchestration:** 
 - 2 distinct Jenkinsfiles (Declarative and Scripted) that manage the build, publish, and reporting lifecycle.
 - pipelines are automatically triggered using a GitHub webhook.
-- Using plugins like: Artifactory, github,Docker pipeline, Email Extension.
+- Using plugins like: Artifactory, github, Docker pipeline, Email Extension.
 
 ## 🎯 Project Goals
 
 The primary objective is to implement a robust **CI/CD** Pipeline that orchestrates the lifecycle of a versioned asset—from code commit to secure binary storage using private Repository (JFrog Artifactory).
-
+---
