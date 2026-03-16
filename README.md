@@ -19,7 +19,7 @@ Git Repository
 Docker Image Build
       │
       ▼
-Jenkins Pipeline
+Jenkins Pipeline (scripted or Declerative)
       │
       ├── Build Stage → Run Python script
       │
