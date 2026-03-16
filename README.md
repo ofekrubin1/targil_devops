@@ -1,4 +1,4 @@
-# 🚀 Targil DevOps Details
+# 🚀 Targil_DevOps Details
 
 ## This repository implements a DevOps CI/CD pipeline using:
 
@@ -9,7 +9,8 @@
 - **JFrog Artifactory**
 - **Python**
 
-The project demonstrates building a containerized environment, running a Python build job, and publishing artifacts to Artifactory through Jenkins pipelines.
+The project demonstrates building a containerized environment, 
+running a Python build job, and publising artifacts to Artifactory through Jenkins pipelines.
 
 ## 🏗️ Pipeline Architecture
 ```
@@ -40,9 +41,12 @@ The project is divided into three core technical layers:
   
 **Application Logic:** Python scripts
 
-**Pipeline Orchestration:** Two distinct Jenkinsfiles (Declarative and Scripted) that manage the build, publish, and reporting lifecycle.
+**Pipeline Orchestration:** 
+- 2 distinct Jenkinsfiles (Declarative and Scripted) that manage the build, publish, and reporting lifecycle.
+- pipelines are automatically triggered using a GitHub webhook.
+- Using plugins like: Artifactory, github,Docker pipeline, Email Extension.
 
-## 📌 Project Goals
+## 🎯 Project Goals
 
 The primary objective is to implement a robust **CI/CD** Pipeline that orchestrates the lifecycle of a versioned asset—from code commit to secure binary storage using private Repository (JFrog Artifactory).
 
