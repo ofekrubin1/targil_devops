@@ -1,7 +1,7 @@
 # 🚀 Targil_DevOps Details
-
+The project demonstrates building a containerized environment, 
+running a Python build job, and publising artifacts to Artifactory through Jenkins pipelines.
 ## ♾️ This repository implements a CI/CD pipeline using:
-
 - **Git**
 - **Docker**
 - **Docker-compose**
@@ -9,8 +9,7 @@
 - **JFrog Artifactory**
 - **Python**
 
-The project demonstrates building a containerized environment, 
-running a Python build job, and publising artifacts to Artifactory through Jenkins pipelines.
+
 
 ## 🏗️ Pipeline Architecture
 ```
