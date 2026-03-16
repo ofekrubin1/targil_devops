@@ -34,9 +34,9 @@ Jenkins Pipeline (scripted or Declerative)
 The project is divided into three core technical layers:
 
 **Environment:** 
-- Custom Dockerfile
-- Jenkins Application(with docker-compose) that will run 2 Jenkinsfiles
-- Artifactory Application(with docker-compose) that will store files
+- Custom Dockerfile.
+- Jenkins Application (with docker-compose) that will trigger 2 Jenkinsfiles from Github.
+- Artifactory Application (with docker-compose) that will store files.
   
 **Application Logic:** Python scripts
 
