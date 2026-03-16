@@ -49,4 +49,4 @@ The project is divided into three core technical layers:
 ## 🎯 Project Goals
 
 The primary objective is to implement a robust **CI/CD** Pipeline that orchestrates the lifecycle of a versioned asset—from code commit to secure binary storage using private Repository (JFrog Artifactory).
----
+
