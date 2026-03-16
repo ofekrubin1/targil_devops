@@ -34,9 +34,9 @@ Jenkins Pipeline
 The project is divided into three core technical layers:
 
 **Environment:** 
-- Create a Custom Dockerfile
-- Create a Jenkins system that will run 2 Jenkinsfiles
-- Create an Artifactory system that will store files
+- Custom Dockerfile
+- Jenkins Application(with docker-compose) that will run 2 Jenkinsfiles
+- Artifactory Application(with docker-compose) that will store files
   
 **Application Logic:** Python scripts
 
