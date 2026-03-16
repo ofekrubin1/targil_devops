@@ -3,9 +3,9 @@
 ## 📌 Project Overview
 The project is divided into three core technical layers:
 
-**Environment:** Custom Dockerfile 
-**Application Logic:** Python scripts
-**Pipeline Orchestration:** Two distinct Jenkinsfiles (Declarative and Scripted) that manage the build, publish, and reporting lifecycle.
+- **Environment:** Custom Dockerfile 
+- **Application Logic:** Python scripts
+- **Pipeline Orchestration:** Two distinct Jenkinsfiles (Declarative and Scripted) that manage the build, publish, and reporting lifecycle.
 
 ## 📌 Project Goals
 
