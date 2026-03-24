@@ -58,17 +58,20 @@ timestamps{
     } 
     
     finally {
-      stage ('Report') {
-        emailext(
-        subject: "Build ${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-        body: "Check console output at: ${env.BUILD_URL}",
-        to: mailRecipients
-        )
-      }
-        stage('Cleanup') {
-        deleteDir()
-        echo "workspace cleaned!"
-      }
+        stage ('Report') {
+            emailext(
+            subject: "Build ${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+            body: "Check console output at: ${env.BUILD_URL}",
+            to: mailRecipients
+            )
+        }
+        stage ('Clean Workspace') {
+            println "🧹 Cleaning workspace..."
+            cleanWs()
+		    ws(pwd()+"@tmp"){
+		    	cleanWs()
+		    }
+        }
     }
   }
 }
