@@ -17,8 +17,7 @@ timestamps{
 
     try {
         
-      docker.image(zipJobImage).inside("-v /var/run/docker.sock:/var/run/docker.sock 
-      --privileged --user=root") {
+      docker.image(zipJobImage).inside("-v /var/run/docker.sock:/var/run/docker.sock --privileged --user=root") {
         stage('Build') {
         echo "Successfully running inside the container!"
         def rc = sh(returnStatus: true, script: "${pythonCommand} ${pythonScriptLocation} && ls -la")
