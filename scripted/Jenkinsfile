@@ -16,31 +16,38 @@ timestamps{
     def mailRecipients = teamList.join(', ')
 
     try {
-      docker.image(zipJobImage).inside("--privileged") {
+        
+      docker.image(zipJobImage).inside("-v /var/run/docker.sock:/var/run/docker.sock 
+      --privileged --user=root") {
         stage('Build') {
         echo "Successfully running inside the container!"
-        sh "${pythonCommand} ${pythonScriptLocation}"
-        sh "ls -la"
+        def rc = sh(returnStatus: true, script: "${pythonCommand} ${pythonScriptLocation} && ls -la")
+        if (rc != 0) {
+            error "Python script failed with exit code ${rc}"
+        } else {
+            println "build was successfull, exit code ${rc}"
         }
         stage('Publish') {
-          def server = Artifactory.server(artifactoryID)
-          files.each { file ->
-            def fileName = "${file}_${version}.zip"
-            if (fileExists(fileName)) {
-              def uploadSpec = """{
-                "files": [
-                  {
-                    "pattern": "${fileName}",
-                    "target": "${artifactoryRepo}/${type}/${timestamp}/"
-                  }
-                ]
-              }"""
-              server.upload(uploadSpec)
-              echo "Uploaded: ${fileName}"
-            } else {
-              error "File not found: ${fileName}"
+            def artifactory_server = Artifactory.server(artifactoryID)
+	        def build_info = Artifactory.newBuildInfo()
+            files.each { file ->
+                def fileName = "${file}_${version}.zip"
+                if (fileExists(fileName)) {
+                    def uploadSpec = """{
+                    "files": [
+                      {
+                        "pattern": "${fileName}",
+                        "target": "${artifactoryRepo}/${type}/${timestamp}/"
+                      }
+                    ]
+                    }"""
+		            artifactory_server.upload(uploadSpec,build_info)
+		            artifactory_server.publishBuildInfo(build_info)
+                    echo "Uploaded: ${fileName}"
+                } else {
+                  error "File not found: ${fileName}"
+                }
             }
-          }
           currentBuild.result = 'SUCCESS'
         }
       }
